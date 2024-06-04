@@ -15,14 +15,27 @@ const negativeSearchTerms: string[] = [
 ];
 
 // Positive tests
-test('searches term', async ({ page }) => {
+test('displays search results', async ({ page }) => {
 	for (let term of positiveSearchTerms) {
 		await page.goto('https://www.artrabbit.com');
 		await page.getByRole('link', { name: 'Toggle Search' }).click();
 		await page.getByPlaceholder('Search here...').fill(term);
 		await page.locator('.m_slideout-search-go').click();
 
-		await expect(page.getByText(`Searching for '${term}'`)).toBeVisible();
+		await expect(
+			page.getByRole('heading', { name: `Searching for '${term}'` })
+		).toBeVisible();
+	}
+});
+
+test('has title', async ({ page }) => {
+	for (let term of positiveSearchTerms) {
+		await page.goto('https://www.artrabbit.com');
+		await page.getByRole('link', { name: 'Toggle Search' }).click();
+		await page.getByPlaceholder('Search here...').fill(term);
+		await page.locator('.m_slideout-search-go').click();
+
+		await expect(page).toHaveTitle(`Searching for ${term}`);
 	}
 });
 
