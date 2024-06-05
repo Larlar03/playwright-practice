@@ -5,13 +5,16 @@
 	"main": "index.js",
 	"scripts": {
 		"test": "npx playwright test",
-		"test:chrome": "npx playwright test --project=chromium"
+		"test:chrome": "npx playwright test --project=chromium",
+		"build": "tsc",
+		"watch": "tsc --watch"
 	},
 	"keywords": [],
 	"author": "",
 	"license": "ISC",
 	"devDependencies": {
 		"@playwright/test": "^1.43.1",
-		"@types/node": "^20.12.7"
+		"@types/node": "^20.12.7",
+		"typescript": "^5.4.5"
 	}
 }
