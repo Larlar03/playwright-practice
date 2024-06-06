@@ -2,7 +2,7 @@ import { test, expect } from '@playwright/test';
 
 // store in .env e.g url etc ()
 //  end to end
-test.describe.only('Registration Journey', () => {
+test.describe('Registration Journey', () => {
 	test('user can register', async ({ page }) => {
 		// assert on the homepage
 		// click the login link
