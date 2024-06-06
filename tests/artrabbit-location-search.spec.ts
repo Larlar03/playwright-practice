@@ -39,7 +39,6 @@ test.describe('Location Search Functionality', () => {
 
 		await page.getByPlaceholder('type location').fill(cities[1]);
 		await page.getByRole('button', { name: 'Go', exact: true }).click();
-		await page.pause();
 
 		await page.waitForSelector('.m_columnised', { timeout: 10000 });
 

@@ -36,22 +36,36 @@ export default defineConfig({
 			name: 'chromium',
 			use: {
 				...devices['Desktop Chrome'],
-				// headless: false,
-				// viewport: {
-				// 	width: 1500,
-				// 	height: 800,
-				// },
+				headless: !!process.env.HEADLESS,
+				viewport: {
+					width: 1500,
+					height: 800,
+				},
 			},
 		},
 
 		{
 			name: 'firefox',
-			use: { ...devices['Desktop Firefox'] },
+			use: {
+				...devices['Desktop Firefox'],
+				headless: !!process.env.HEADLESS,
+				viewport: {
+					width: 1500,
+					height: 800,
+				},
+			},
 		},
 
 		{
 			name: 'webkit',
-			use: { ...devices['Desktop Safari'] },
+			use: {
+				...devices['Desktop Safari'],
+				headless: !!process.env.HEADLESS,
+				viewport: {
+					width: 1500,
+					height: 800,
+				},
+			},
 		},
 
 		/* Test against mobile viewports. */
