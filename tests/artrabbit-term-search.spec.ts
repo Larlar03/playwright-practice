@@ -1,4 +1,5 @@
 import { test, expect } from '@playwright/test';
+import { Homepage } from '../pages/homepage';
 
 const positiveSearchTerms: string[] = [
 	'pottery',
@@ -20,9 +21,8 @@ test.describe('Term Search Functionality', () => {
 		for (let term of positiveSearchTerms) {
 			await page.goto('https://www.artrabbit.com');
 
-			await page.getByRole('link', { name: 'Toggle Search' }).click();
-			await page.getByPlaceholder('Search here...').fill(term);
-			await page.locator('.m_slideout-search-go').click();
+			const homepage = new Homepage(page);
+			homepage.Search(term);
 
 			await expect(
 				page.getByRole('heading', { name: `Searching for '${term}'` })
@@ -34,9 +34,8 @@ test.describe('Term Search Functionality', () => {
 		for (let term of positiveSearchTerms) {
 			await page.goto('https://www.artrabbit.com');
 
-			await page.getByRole('link', { name: 'Toggle Search' }).click();
-			await page.getByPlaceholder('Search here...').fill(term);
-			await page.locator('.m_slideout-search-go').click();
+			const homepage = new Homepage(page);
+			homepage.Search(term);
 
 			await expect(page).toHaveTitle(`Searching for ${term}`);
 		}
