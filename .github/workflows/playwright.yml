@@ -18,11 +18,11 @@ jobs:
       - name: Install Playwright Browsers
         run: npx playwright install --with-deps
       - name: Run Playwright tests
-        run: npx playwright test
+        run: npx playwright test --debug
         env:
-          HEADLESS: ${{ vars.HEADLESS }}
-          CI: ${{ vars.CI }}
-          BASE_URL: ${{ secrets.BASE_URL }}
+          HEADLESS: true
+          CI: false
+          BASE_URL: 'https://www.artrabbit.com'
       - uses: actions/upload-artifact@v4
         if: always()
         with:
