@@ -23,7 +23,7 @@ export default defineConfig({
 	use: {
 		/* Base URL to use in actions like `await page.goto('/')`. */
 		baseURL: process.env.BASE_URL,
-
+		headless: true,
 		/* Collect trace when retrying the failed test. See https://playwright.dev/docs/trace-viewer */
 		trace: 'on-first-retry',
 	},
@@ -34,7 +34,6 @@ export default defineConfig({
 			name: 'chromium',
 			use: {
 				...devices['Desktop Chrome'],
-				headless: !!process.env.HEADLESS,
 				viewport: {
 					width: 1500,
 					height: 800,
@@ -46,7 +45,7 @@ export default defineConfig({
 			name: 'firefox',
 			use: {
 				...devices['Desktop Firefox'],
-				headless: !process.env.HEADLESS,
+
 				viewport: {
 					width: 1500,
 					height: 800,
@@ -58,7 +57,6 @@ export default defineConfig({
 			name: 'webkit',
 			use: {
 				...devices['Desktop Safari'],
-				headless: !process.env.HEADLESS,
 				viewport: {
 					width: 1500,
 					height: 800,
