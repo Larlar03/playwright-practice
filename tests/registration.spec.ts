@@ -15,9 +15,9 @@ test.describe('Registration Journey', () => {
 		await signUp.fillOutForm(user);
 
 		// check captcha
-		await page.locator('input#terms').dispatchEvent('click');
-		await page.locator('.recaptcha-checkbox').dispatchEvent('click');
-		await page.pause();
+		// await page.locator('input#terms').dispatchEvent('click');
+		// await page.locator('.recaptcha-checkbox').dispatchEvent('click');
+		// await page.pause();
 		// await page
 		// 	.frameLocator('iframe[name="a-vxi5tddfqatg"]')
 		// 	.getByLabel("I'm not a robot")
