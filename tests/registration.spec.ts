@@ -1,6 +1,5 @@
 import { test, expect } from '@playwright/test';
 import { Homepage } from '../pages/homepage';
-import { SignUpPage } from '../pages/signupPage';
 import { user } from '../helpers/constants';
 
 // store in .env e.g url etc ()
@@ -8,20 +7,29 @@ import { user } from '../helpers/constants';
 test.describe('Registration Journey', () => {
 	test('user can register', async ({ page }) => {
 		const homepage = new Homepage(page);
-		const signUp = new SignUpPage(page);
 
 		await page.goto('/');
-		await homepage.goToSignUpPage();
+		const signUp = await homepage.goToSignUpPage();
 		await signUp.fillOutForm(user);
 
-		// check captcha
-		// await page.locator('input#terms').dispatchEvent('click');
-		// await page.locator('.recaptcha-checkbox').dispatchEvent('click');
+		// TODO: check terms
+		// const termsInput = page.locator('input#terms');
+		// await termsInput.dispatchEvent('check', { force: true });
 		// await page.pause();
-		// await page
-		// 	.frameLocator('iframe[name="a-vxi5tddfqatg"]')
-		// 	.getByLabel("I'm not a robot")
-		// 	.dblclick();
+
+		// check captcha
+		const captchaBox = page.frameLocator('iframe[title="reCAPTCHA"]');
+
+		try {
+			captchaBox.locator('#recaptcha-anchor').waitFor({
+				state: 'visible',
+				timeout: 5000,
+			});
+			captchaBox.locator('#recaptcha-anchor').click();
+			await page.pause();
+		} catch {
+			console.log('Cannot find captcha element');
+		}
 
 		// click join link
 		// assert confirmation page/message

@@ -26,13 +26,12 @@ test.describe('Search Journey - Happy Path', () => {
 	test('user can search for event by interest', async ({ page }) => {
 		for (let term of positiveSearchTerms) {
 			const homepage = new Homepage(page);
-			const resultsPage = new ResultsPage(page);
 
 			// Go to homepage
 			await page.goto('/');
 
 			// Search for term
-			await homepage.searchByTerm(term);
+			const resultsPage = await homepage.searchByTerm(term);
 			await expect(page).toHaveTitle(`Searching for ${term}`);
 			await expect(
 				page.getByRole('heading', { name: `Searching for '${term}'` })
@@ -63,13 +62,13 @@ test.describe('Search Journey - Happy Path', () => {
 
 	test('user can search for event by location', async ({ page }) => {
 		for (let city of cities) {
-			// Go to homepage
 			const homepage = new Homepage(page);
-			const resultsPage = new ResultsPage(page);
+
+			// Go to homepage
 			await page.goto('/');
 
 			// Search for location
-			await homepage.searchByLocation(city);
+			const resultsPage = await homepage.searchByLocation(city);
 
 			// Check date
 			const date = formatDate();
