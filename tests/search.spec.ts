@@ -1,7 +1,6 @@
 import { test, expect } from '@playwright/test';
-import { Homepage } from '../pages/homepage';
+import { Homepage } from '../pages/homePage';
 import formatDate from '../helpers/formatDate';
-import { ResultsPage } from '../pages/resultsPage';
 import {
 	cities,
 	positiveSearchTerms,
@@ -104,29 +103,52 @@ test.describe('Search Journey - Happy Path', () => {
 	});
 });
 
-// test.describe('Search Journey - Unhappy Path', () => {
-// 	test('finds 0 results', async ({ page }) => {
-// 		for (let term of negativeSearchTerms) {
-// 			const homepage = new Homepage(page);
-// 			await page.goto('https://www.artrabbit.com');
-// 			await homepage.searchForExhibitionByTerm(term);
-// 			await expect(page.getByText('No results found.')).toBeVisible();
-// 		}
-// 	test('search term is too short', async ({ page }) => {
-// 	  const homepage = new Homepage(page);
-// 	  await page.goto('https://www.artrabbit.com');
-// 	  await homepage.searchForExhibitionByTerm('hi');
-// 	  await expect(
-// 	    page.getByText('You need a longer search query')
-// 	  ).toBeVisible();
-// 	});
-// 	test('displays message when 0 results are returned', async ({ page }) => {
-// 		const homepage = new Homepage(page);
-// 		await page.goto('https://www.artrabbit.com');
-// 		homepage.searchForExhibitionByLocation('xyz');
-// 		await page.pause();
-// 		await expect(page.locator('.mod--location')).toHaveText(
-// 			"We can't find any art events happening near xyz"
-// 		);
-// 	});
-// });
+test.describe('Search Journey - Unhappy Paths', () => {
+	test('finds 0 results', async ({ page }) => {
+		const homepage = new Homepage(page);
+
+		// search for negative terms
+		for (let term of negativeSearchTerms) {
+			await page.goto('/');
+			await homepage.searchByTerm(term);
+			await expect(page.getByText('No results found.')).toBeVisible();
+		}
+
+		// on the results page search for a short term
+		await page.getByRole('searchbox', { name: 'Search here...' }).fill('Hi');
+		await page.getByRole('button', { name: 'Go' }).click();
+		await expect(
+			page.getByText('You need a longer search query')
+		).toBeVisible();
+	});
+
+	test('search term is too short', async ({ page }) => {
+		// const homepage = new Homepage(page);
+		await page.goto('/');
+		// on the results page search for a short term
+		await page.getByRole('searchbox', { name: 'Search here...' }).fill('Hi');
+		await page.getByRole('button', { name: 'Go' }).click();
+		await expect(
+			page.getByText('You need a longer search query')
+		).toBeVisible();
+	});
+
+	test.only('displays message when invalid location is searched', async ({
+		page,
+	}) => {
+		// const homepage = new Homepage(page);
+		await page.goto('/');
+
+		// search for invalid location
+		await page.getByPlaceholder('type location').click();
+		await page.getByPlaceholder('type location').fill('xyz');
+		await page.getByText("XYZ by The Art of XYZQueen's").click();
+		await page.getByRole('button', { name: 'Go', exact: true }).click();
+		await page.pause();
+		await expect(
+			page.getByText(
+				"We can't find any art events happening near XYZ by The Art of XYZ"
+			)
+		).toBeVisible();
+	});
+});
